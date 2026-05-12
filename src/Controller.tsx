@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { DOW } from './time';
 
 type Orientation = 'horizontal' | 'vertical';
 
@@ -10,6 +11,7 @@ export type HeatmapConfig = {
   dowOffset: number;
   size: number;
   radius: number;
+  dowSelected: boolean[];
 }
 
 function toInputDate(date: Date): string {
@@ -27,8 +29,11 @@ export default function HeatmapControls({ config, onChange }: { config: HeatmapC
   const [dowOffset, setDowOffset] =
     useState<number>(config.dowOffset);
 
+  const [dowSelected, setDowSelected] = useState<boolean[]>([true,true,true,true,true,true, true])
+
   function emit(next?: Partial<HeatmapConfig>) {
     const state = {
+      dowSelected,
       size,
       start,
       end,
@@ -46,7 +51,8 @@ export default function HeatmapControls({ config, onChange }: { config: HeatmapC
       orientation: state.orientation,
       dowOffset: state.dowOffset,
       size: state.size,
-      radius: state.radius
+      radius: state.radius,
+      dowSelected: state.dowSelected
     });
   }
 
@@ -196,6 +202,32 @@ export default function HeatmapControls({ config, onChange }: { config: HeatmapC
           />
         </label>
       </fieldset>
+
+      {/* Day of week */}
+      <fieldset style={styles.fieldset}>
+        <legend style={styles.legend}>
+          Day Of Week
+        </legend>
+
+        { new DOW(dowOffset).list.map((d, i) => {
+          return (<label key={i} style={styles.inlineLabel}>
+            <span style={{width: '3rem'}}>{d}</span>
+
+            <input
+              type="checkbox"
+              checked={dowSelected[i]}
+              onChange={(e) => {
+                const checked = Boolean(e.target.checked);
+                const nextArr = dowSelected.map((_, ii) => ii === i ? checked : _)
+                setDowSelected(nextArr)
+                emit({ dowSelected: nextArr })
+              }}
+            />
+          </label>
+          )
+        }) }
+
+      </fieldset>
     </div>
   );
 }
@@ -230,7 +262,7 @@ const styles: Record<string, React.CSSProperties> = {
 
   inlineLabel: {
     display: 'flex',
-    alignItems: 'center',
+    alignItems: 'normal',
     gap: '0.5rem',
   },
 };

@@ -35,7 +35,7 @@ export class DOW {
     US: 0,
     EU: 1
   }
-  private offset: number = DOW.OffsetTypes.US
+  public offset: number = DOW.OffsetTypes.US
   public setOffset(offset: number): void {
     this.offset = offset
   }
@@ -67,6 +67,7 @@ export class DOW {
   public getDay(date: Date) {
     return ((date.getDay() - this.offset) % 7 + 7) % 7
   }
+
 }
 
 export function getGridDates(gridStart: Date, gridEnd: Date, dow: DOW): Date[] {
