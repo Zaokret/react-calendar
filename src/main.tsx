@@ -4,7 +4,7 @@ import './index.css';
 import Heatmap from './App.tsx';
 import { get12MonthPeriod } from './time.ts';
 import HeatmapControls, { type HeatmapConfig } from './Controller.tsx';
-import { DOWPreferenceProvider, useDOWPreference } from './context.tsx';
+import { DOWPreferenceProvider, useDOWPreference } from './Context.tsx';
 
 function App() {
   const {startDate, endDate} = get12MonthPeriod(new Date())

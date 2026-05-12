@@ -1,7 +1,7 @@
 import { useMemo, useRef } from 'react';
 import './App.css';
 import { chunkWeeks, DOW, getGridDates } from './time';
-import { useDOWPreference } from './context';
+import { useDOWPreference } from './Context';
 
 type GridDate = {
   date: Date;
